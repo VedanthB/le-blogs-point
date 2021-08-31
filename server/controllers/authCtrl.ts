@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import Users from "../models/userModel";
 import bcrypt from "bcrypt";
-// import jwt from "jwt";
+import jwt from "jsonwebtoken";
 import { generateActiveToken } from "../config/generateToken";
 
 const authCtrl = {
@@ -10,11 +10,10 @@ const authCtrl = {
       const { name, account, password } = req.body;
 
       const user = await Users.findOne({ account });
-
       if (user)
         return res
           .status(400)
-          .json({ msg: "Email or phone number already exists" });
+          .json({ msg: "Email or Phone number already exists." });
 
       const passwordHash = await bcrypt.hash(password, 12);
 
@@ -28,8 +27,10 @@ const authCtrl = {
         data: newUser,
         active_token,
       });
-    } catch (error) {
-      return res.status(500).json({ msg: error.message });
+    } catch (err: any) {
+      return res.status(500).json({ msg: err.message });
     }
   },
 };
+
+export default authCtrl;
