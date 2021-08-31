@@ -4,7 +4,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { generateActiveToken } from "../config/generateToken";
 import sendMail from "../config/sendMail";
-import { validateEmail, validPhone } from "../middleware/vaild";
+import { validateEmail, validPhone } from "../middleware/valid";
 import { sendSms } from "../config/sendSMS";
 import { IDecodedToken } from "../config/interface";
 
