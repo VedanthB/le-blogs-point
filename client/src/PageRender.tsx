@@ -7,6 +7,7 @@ const generatePage = (name: string) => {
   const component = () => require(`./pages/${name}`).default;
 
   try {
+    // Create and return a new React element of the given type. The type argument can be either a tag name string (such as 'div' or 'span'), a React component type (a class or a function), or a React fragment type.
     return React.createElement(component());
   } catch (error) {
     return <NotFound />;
