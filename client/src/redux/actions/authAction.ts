@@ -20,6 +20,8 @@ export const login =
           user: res.data.user,
         },
       });
+
+      dispatch({ type: ALERT, payload: { success: "Login Success!" } });
     } catch (error: any) {
       dispatch({ type: ALERT, payload: { errors: error.response.data.msg } });
     }
