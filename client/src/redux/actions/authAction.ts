@@ -17,7 +17,7 @@ export const login =
       dispatch({ type: AUTH, payload: res.data });
 
       dispatch({ type: ALERT, payload: { success: res.data.message } });
-      localStorage.setItem('logged', 'blogs-point');
+      localStorage.setItem('logged', 'le-blogsPoint');
     } catch (error: any) {
       dispatch({ type: ALERT, payload: { errors: error.response.data.msg } });
     }
@@ -45,7 +45,7 @@ export const register =
 export const refreshToken =
   () => async (dispatch: Dispatch<IAuthType | IAlertType>) => {
     const logged = localStorage.getItem('logged');
-    if (logged !== 'devat-channel') return;
+    if (logged !== 'le-blogsPoint') return;
 
     try {
       dispatch({ type: ALERT, payload: { loading: true } });
@@ -81,7 +81,24 @@ export const googleLogin =
       dispatch({ type: AUTH, payload: res.data });
 
       dispatch({ type: ALERT, payload: { success: res.data.msg } });
-      localStorage.setItem('logged', 'devat-channel');
+      localStorage.setItem('logged', 'le-blogsPoint');
+    } catch (err: any) {
+      dispatch({ type: ALERT, payload: { errors: err.response.data.msg } });
+    }
+  };
+
+export const facebookLogin =
+  (accessToken: string, userID: string) =>
+  async (dispatch: Dispatch<IAlertType | IAuthType>) => {
+    try {
+      dispatch({ type: ALERT, payload: { loading: true } });
+
+      const res = await postAPI('facebook_login', { accessToken, userID });
+
+      dispatch({ type: AUTH, payload: res.data });
+
+      dispatch({ type: ALERT, payload: { success: res.data.msg } });
+      localStorage.setItem('logged', 'le-blogsPoint');
     } catch (err: any) {
       dispatch({ type: ALERT, payload: { errors: err.response.data.msg } });
     }
