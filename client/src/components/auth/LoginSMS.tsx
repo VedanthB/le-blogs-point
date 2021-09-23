@@ -1,10 +1,20 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+
+import { FormSubmit } from '../../utils/Typescript';
+import { loginSMS } from '../../redux/actions/authAction';
 
 const LoginSMS = () => {
-  const [phone, setPhone] = useState("");
+  const [phone, setPhone] = useState('');
+  const dispatch = useDispatch();
+
+  const handleSubmit = (e: FormSubmit) => {
+    e.preventDefault();
+    dispatch(loginSMS(phone));
+  };
 
   return (
-    <form>
+    <form onSubmit={handleSubmit}>
       <div className="form-group mb-3">
         <label htmlFor="phone" className="form-label">
           Phone Number
