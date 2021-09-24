@@ -1,6 +1,12 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootStore, IUserProfile, InputChange } from '../../utils/Typescript';
+import { updateUser } from '../../redux/actions/profileAction';
+import {
+  RootStore,
+  IUserProfile,
+  InputChange,
+  FormSubmit,
+} from '../../utils/Typescript';
 import NotFound from '../global/NotFound';
 
 const UserInfo = () => {
@@ -34,12 +40,17 @@ const UserInfo = () => {
     }
   };
 
+  const handleSubmit = (e: FormSubmit) => {
+    e.preventDefault();
+    if (avatar || name) dispatch(updateUser(avatar as File, name, auth));
+  };
+
   const { name, account, avatar, password, cf_password } = user;
 
   if (!auth.user) return <NotFound />;
 
   return (
-    <form className="profile_info">
+    <form className="profile_info" onSubmit={handleSubmit}>
       <div className="info_avatar">
         <img src={avatar ? URL.createObjectURL(avatar) : auth.user.avatar} />
 
