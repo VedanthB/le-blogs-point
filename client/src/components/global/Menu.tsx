@@ -1,8 +1,8 @@
-import React from "react";
-import { Link, useLocation } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import { RootStore } from "../../utils/Typescript";
-import { logout } from "../../redux/actions/authAction";
+import React from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { RootStore } from '../../utils/Typescript';
+import { logout } from '../../redux/actions/authAction';
 
 const Menu = () => {
   const { auth } = useSelector((state: RootStore) => state);
@@ -11,19 +11,19 @@ const Menu = () => {
   const { pathname } = useLocation();
 
   const bfLoginLinks = [
-    { label: "Login", path: "/login" },
-    { label: "Register", path: "/register" },
+    { label: 'Login', path: '/login' },
+    { label: 'Register', path: '/register' },
   ];
 
   const afLoginLinks = [
-    { label: "Home", path: "/" },
-    { label: "CreateBlog", path: "/create_blog" },
+    { label: 'Home', path: '/' },
+    { label: 'CreateBlog', path: '/create_blog' },
   ];
 
   const navLinks = auth.access_token ? afLoginLinks : bfLoginLinks;
 
   const isActive = (pn: string) => {
-    if (pn === pathname) return "active";
+    if (pn === pathname) return 'active';
   };
 
   return (
@@ -50,7 +50,7 @@ const Menu = () => {
 
           <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
             <li>
-              <Link className="dropdown-item" to="/profile">
+              <Link className="dropdown-item" to={`/profile/${auth.user._id}`}>
                 Profile
               </Link>
             </li>
