@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateUser } from '../../redux/actions/profileAction';
+import { updateUser, resetPassword } from '../../redux/actions/profileAction';
 import {
   RootStore,
   IUserProfile,
@@ -43,16 +43,21 @@ const UserInfo = () => {
   const handleSubmit = (e: FormSubmit) => {
     e.preventDefault();
     if (avatar || name) dispatch(updateUser(avatar as File, name, auth));
+    if (password && auth.access_token)
+      dispatch(resetPassword(password, cf_password, auth.access_token));
   };
 
-  const { name, account, avatar, password, cf_password } = user;
+  const { name, avatar, password, cf_password } = user;
 
   if (!auth.user) return <NotFound />;
 
   return (
     <form className="profile_info" onSubmit={handleSubmit}>
       <div className="info_avatar">
-        <img src={avatar ? URL.createObjectURL(avatar) : auth.user.avatar} />
+        <img
+          src={avatar ? URL.createObjectURL(avatar) : auth.user.avatar}
+          alt="profilePicture"
+        />
 
         <span>
           <i className="fas fa-camera" />
@@ -92,6 +97,12 @@ const UserInfo = () => {
         />
       </div>
 
+      {auth.user.type !== 'register' && (
+        <small className="text-danger">
+          * Quick login account with {auth.user.type} can't use this function *
+        </small>
+      )}
+
       <div className="form-group my-3">
         <label htmlFor="password">Password</label>
 
@@ -103,6 +114,7 @@ const UserInfo = () => {
             name="password"
             value={password}
             onChange={handleChangeInput}
+            disabled={auth.user.type !== 'register'}
           />
 
           <small onClick={() => setTypePass(!typePass)}>
@@ -122,6 +134,7 @@ const UserInfo = () => {
             name="cf_password"
             value={cf_password}
             onChange={handleChangeInput}
+            disabled={auth.user.type !== 'register'}
           />
 
           <small onClick={() => setTypeCfPass(!typeCfPass)}>
