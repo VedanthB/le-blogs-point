@@ -1,26 +1,23 @@
-import { IUserRegister } from "./Typescript";
+import { IUserRegister } from './Typescript';
 
 export const validRegister = (userRegister: IUserRegister) => {
   const { name, account, password, cf_password } = userRegister;
   const errors: string[] = [];
 
   if (!name) {
-    errors.push("Please add your name.");
+    errors.push('Please add your name.');
   } else if (name.length > 20) {
-    errors.push("Your name is up to 20 chars long.");
+    errors.push('Your name is up to 20 chars long.');
   }
 
   if (!account) {
-    errors.push("Please add your email or phone number.");
+    errors.push('Please add your email or phone number.');
   } else if (!validPhone(account) && !validateEmail(account)) {
-    errors.push("Email or phone number format is incorrect.");
+    errors.push('Email or phone number format is incorrect.');
   }
 
-  if (password.length < 6) {
-    errors.push("Password must be at least 6 chars.");
-  } else if (password !== cf_password) {
-    errors.push("Confirm password did not match.");
-  }
+  const msg = checkPassword(password, cf_password);
+  if (msg) errors.push(msg);
 
   return {
     errMsg: errors,
@@ -32,6 +29,14 @@ export function validPhone(phone: string) {
   const re = /^[+]/g;
   return re.test(phone);
 }
+
+export const checkPassword = (password: string, cf_password: string) => {
+  if (password.length < 6) {
+    return 'Password must be at least 6 chars.';
+  } else if (password !== cf_password) {
+    return 'Confirm password did not match.';
+  }
+};
 
 export function validateEmail(email: string) {
   const re =
