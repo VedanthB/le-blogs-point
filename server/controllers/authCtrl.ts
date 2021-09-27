@@ -203,14 +203,14 @@ const authCtrl = {
 
 const loginUser = async (user: IUser, password: string, res: Response) => {
   const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
-      let msgError =
-        user.type === 'register'
-          ? 'Password is incorrect.'
-          : `Password is incorrect. This account login with ${user.type}`;
+  if (!isMatch) {
+    let msgError =
+      user.type === 'register'
+        ? 'Password is incorrect.'
+        : `Password is incorrect. This account login with ${user.type}`;
 
-      return res.status(400).json({ msg: msgError });
-    }
+    return res.status(400).json({ msg: msgError });
+  }
   const access_token = generateAccessToken({ id: user._id });
   const refresh_token = generateRefreshToken({ id: user._id });
 
