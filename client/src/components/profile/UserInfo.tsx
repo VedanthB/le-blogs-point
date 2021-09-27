@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateUser, resetPassword } from '../../redux/actions/profileAction';
+import { resetPassword, updateUser } from '../../redux/actions/profileAction';
 import {
   RootStore,
   IUserProfile,
