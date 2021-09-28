@@ -59,6 +59,21 @@ const categoryCtrl = {
       return res.status(500).json({ msg: err.message });
     }
   },
+  deleteCategory: async (req: IReqAuth, res: Response) => {
+    if (!req.user)
+      return res.status(400).json({ msg: 'Invalid Authentication.' });
+
+    if (req.user.role !== 'admin')
+      return res.status(400).json({ msg: 'Invalid Authentication.' });
+
+    try {
+      const category = await Categories.findByIdAndDelete(req.params.id);
+
+      res.json({ msg: 'Delete Success!' });
+    } catch (err: any) {
+      return res.status(500).json({ msg: err.message });
+    }
+  },
 };
 
 export default categoryCtrl;
