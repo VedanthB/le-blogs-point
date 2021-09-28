@@ -31,6 +31,14 @@ const categoryCtrl = {
       return res.status(500).json({ msg: errMsg });
     }
   },
+  getCategories: async (req: Request, res: Response) => {
+    try {
+      const categories = await Categories.find().sort('-createdAt');
+      res.json({ categories });
+    } catch (err: any) {
+      return res.status(500).json({ msg: err.message });
+    }
+  },
 };
 
 export default categoryCtrl;
