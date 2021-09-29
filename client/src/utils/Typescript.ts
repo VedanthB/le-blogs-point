@@ -31,6 +31,13 @@ export interface IUser extends IUserLogin {
   _id: string;
 }
 
+export interface ICategory {
+  _id: string;
+  name: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface IAlert {
   loading?: boolean;
   success?: string | string[];
