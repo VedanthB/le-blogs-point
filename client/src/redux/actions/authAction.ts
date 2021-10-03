@@ -126,7 +126,7 @@ export const verifySMS = async (
 
     localStorage.setItem('logged', 'le-blogsPoint');
   } catch (err: any) {
-    dispatch({ type: ALERT, payload: { errors: err.response.data.msg } });
+    dispatch({ type: ALERT, payload: { errors: err.res.data.msg } });
     setTimeout(() => {
       verifySMS(phone, dispatch);
     }, 100);
