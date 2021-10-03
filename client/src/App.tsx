@@ -7,6 +7,7 @@ import PageRender from './PageRender';
 import { useDispatch } from 'react-redux';
 import { refreshToken } from './redux/actions/authAction';
 import { getCategories } from './redux/actions/categoryAction';
+import { getHomeBlogs } from './redux/actions/blogAction';
 
 function App() {
   const dispatch = useDispatch();
@@ -14,6 +15,7 @@ function App() {
   useEffect(() => {
     dispatch(refreshToken());
     dispatch(getCategories());
+    dispatch(getHomeBlogs());
   }, [dispatch]);
 
   return (
