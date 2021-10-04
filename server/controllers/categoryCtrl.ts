@@ -51,7 +51,7 @@ const categoryCtrl = {
         {
           _id: req.params.id,
         }, // condition
-        { name: req.body.name } //update
+        { name: req.body.name.toLowerCase() } //update
       );
 
       res.json({ msg: 'Update Success!' });
