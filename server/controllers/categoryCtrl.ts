@@ -50,10 +50,9 @@ const categoryCtrl = {
       const category = await Categories.findOneAndUpdate(
         {
           _id: req.params.id,
-        }, // condition
-        { name: req.body.name } //update
-      );
-
+        },
+        { name: req.body.name.toLowerCase() }
+      ); //update
       res.json({ msg: 'Update Success!' });
     } catch (err: any) {
       return res.status(500).json({ msg: err.message });
