@@ -141,6 +141,7 @@ const blogCtrl = {
       ]);
 
       const blogs = Data[0].totalData;
+      // console.log(blogs, '...');
       const count = Data[0].count;
 
       // Pagination
