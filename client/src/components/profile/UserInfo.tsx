@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { resetPassword, updateUser } from '../../redux/actions/profileAction';
+import { resetPassword, updateUser } from '../../redux/actions/userAction';
 import {
   RootStore,
   IUserProfile,
@@ -55,7 +55,7 @@ const UserInfo = () => {
     <form className="profile_info" onSubmit={handleSubmit}>
       <div className="info_avatar">
         <img
-          src={avatar ? URL.createObjectURL(avatar) : auth.user.avatar}
+          src={avatar ? URL.createObjectURL(avatar as any) : auth.user.avatar}
           alt="profilePicture"
         />
 
