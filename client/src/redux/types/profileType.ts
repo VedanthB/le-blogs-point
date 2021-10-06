@@ -1,4 +1,4 @@
-import { IUser } from '../../utils/TypeScript';
+import { IUser } from '../../utils/Typescript';
 
 export const GET_OTHER_INFO = 'GET_OTHER_INFO';
 
