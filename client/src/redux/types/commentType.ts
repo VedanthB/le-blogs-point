@@ -1,4 +1,4 @@
-import { IComment } from '../../utils/TypeScript';
+import { IComment } from '../../utils/Typescript';
 
 export const CREATE_COMMENT = 'CREATE_COMMENT';
 
