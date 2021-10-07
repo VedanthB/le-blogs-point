@@ -2,6 +2,7 @@ import {
   ICommentState,
   CREATE_COMMENT,
   ICommentType,
+  GET_COMMENTS,
 } from '../types/commentType';
 
 const initialState = {
@@ -19,6 +20,9 @@ const commentReducer = (
         ...state,
         data: [action.payload, ...state.data],
       };
+
+    case GET_COMMENTS:
+      return action.payload;
 
     default:
       return state;
