@@ -13,6 +13,11 @@ interface IProps {
 const Comments: React.FC<IProps> = ({ comment }) => {
   const [showReply, setShowReply] = useState<IComment[]>([]);
 
+  useEffect(() => {
+    if (!comment.replyCM) return;
+    setShowReply(comment.replyCM);
+  }, [comment.replyCM]);
+
   return (
     <div
       className="my-3 d-flex"
