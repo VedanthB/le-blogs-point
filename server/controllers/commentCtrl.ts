@@ -93,6 +93,37 @@ const commentCtrl = {
       return res.status(500).json({ msg: err.message });
     }
   },
+  replyComment: async (req: IReqAuth, res: Response) => {
+    if (!req.user)
+      return res.status(400).json({ msg: 'invalid Authentication.' });
+
+    try {
+      const { content, blog_id, blog_user_id, comment_root, reply_user } =
+        req.body;
+
+      const newComment = new Comments({
+        user: req.user._id,
+        content,
+        blog_id,
+        blog_user_id,
+        comment_root,
+        reply_user: reply_user._id,
+      });
+
+      await Comments.findOneAndUpdate(
+        { _id: comment_root },
+        {
+          $push: { replyCM: newComment._id },
+        }
+      );
+
+      await newComment.save();
+
+      return res.json(newComment);
+    } catch (err: any) {
+      return res.status(500).json({ msg: err.message });
+    }
+  },
 };
 
 export default commentCtrl;
