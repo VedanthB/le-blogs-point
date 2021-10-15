@@ -14,7 +14,7 @@ import {
 } from '../types/commentType';
 
 import { IComment } from '../../utils/Typescript';
-import { getAPI, postAPI } from '../../utils/FetchData';
+import { getAPI, patchAPI, postAPI } from '../../utils/FetchData';
 
 export const createComment =
   (data: IComment, token: string) =>
@@ -80,7 +80,29 @@ export const updateComment =
         type: data.comment_root ? UPDATE_REPLY : UPDATE_COMMENT,
         payload: data,
       });
-      // const res = await postAPI('comment', data, token)
+
+      await patchAPI(
+        `comment/${data._id}`,
+        {
+          content: data.content,
+        },
+        token
+      );
+    } catch (err: any) {
+      dispatch({ type: ALERT, payload: { errors: err.response.data.msg } });
+    }
+  };
+
+export const deleteComment =
+  (data: IComment, token: string) =>
+  async (dispatch: Dispatch<IAlertType | IDeleteType>) => {
+    try {
+      dispatch({
+        type: data.comment_root ? DELETE_REPLY : DELETE_COMMENT,
+        payload: data,
+      });
+
+      await deleteAPI(`comment/${data._id}`, token);
     } catch (err: any) {
       dispatch({ type: ALERT, payload: { errors: err.response.data.msg } });
     }
