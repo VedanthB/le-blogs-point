@@ -35,6 +35,7 @@ import { SocketServer } from './config/socket';
 io.on('connection', (socket: Socket) => {
   SocketServer(socket);
 });
+
 //server listening
 const PORT = process.env.PORT || 5000;
 http.listen(PORT, () => {
