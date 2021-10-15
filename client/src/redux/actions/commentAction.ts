@@ -68,3 +68,17 @@ export const replyComment =
       dispatch({ type: ALERT, payload: { errors: err.response.data.msg } });
     }
   };
+
+export const updateComment =
+  (data: IComment, token: string) =>
+  async (dispatch: Dispatch<IAlertType | IUpdateType>) => {
+    try {
+      dispatch({
+        type: data.comment_root ? UPDATE_REPLY : UPDATE_COMMENT,
+        payload: data,
+      });
+      // const res = await postAPI('comment', data, token)
+    } catch (err: any) {
+      dispatch({ type: ALERT, payload: { errors: err.response.data.msg } });
+    }
+  };
