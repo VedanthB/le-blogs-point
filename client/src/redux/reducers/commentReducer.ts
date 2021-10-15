@@ -4,6 +4,8 @@ import {
   ICommentType,
   GET_COMMENTS,
   REPLY_COMMENT,
+  UPDATE_REPLY,
+  UPDATE_COMMENT,
 } from '../types/commentType';
 
 const initialState = {

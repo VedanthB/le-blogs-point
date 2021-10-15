@@ -7,7 +7,10 @@ import {
   ICreateCommentType,
   IGetCommentsType,
   IReplyCommentType,
+  IUpdateType,
   REPLY_COMMENT,
+  UPDATE_COMMENT,
+  UPDATE_REPLY,
 } from '../types/commentType';
 
 import { IComment } from '../../utils/Typescript';
