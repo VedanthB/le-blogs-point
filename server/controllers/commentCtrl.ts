@@ -55,6 +55,34 @@ const commentCtrl = {
                 },
               },
               { $unwind: '$user' },
+              {
+                $lookup: {
+                  from: 'comments',
+                  let: { cm_id: '$replyCM' },
+                  pipeline: [
+                    { $match: { $expr: { $in: ['$_id', '$$cm_id'] } } },
+                    {
+                      $lookup: {
+                        from: 'users',
+                        localField: 'user',
+                        foreignField: '_id',
+                        as: 'user',
+                      },
+                    },
+                    { $unwind: '$user' },
+                    {
+                      $lookup: {
+                        from: 'users',
+                        localField: 'reply_user',
+                        foreignField: '_id',
+                        as: 'reply_user',
+                      },
+                    },
+                    { $unwind: '$reply_user' },
+                  ],
+                  as: 'replyCM',
+                },
+              },
               { $sort: { createdAt: -1 } },
               { $skip: skip },
               { $limit: limit },
@@ -62,7 +90,9 @@ const commentCtrl = {
             totalCount: [
               {
                 $match: {
-                  blog_id: new mongoose.Types.ObjectId(req.params.id),
+                  blog_id: mongoose.Types.ObjectId(req.params.id),
+                  comment_root: { $exists: false },
+                  reply_user: { $exists: false },
                 },
               },
               { $count: 'count' },
