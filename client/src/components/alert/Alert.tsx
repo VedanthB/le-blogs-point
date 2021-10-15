@@ -1,8 +1,8 @@
-import { useSelector } from "react-redux";
-import { RootStore } from "../../utils/Typescript";
+import { useSelector } from 'react-redux';
+import { RootStore } from '../../utils/Typescript';
 
-import Loading from "./Loading";
-import Toast from "./Toast";
+import Loading from './Loading';
+import Toast from './Toast';
 
 export const Alert = () => {
   const { alert } = useSelector((state: RootStore) => state);
