@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { replyComment } from '../../redux/actions/commentAction';
 
 import { IComment, RootStore } from '../../utils/Typescript';
 
