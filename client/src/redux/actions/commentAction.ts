@@ -3,8 +3,11 @@ import { Dispatch } from 'redux';
 import { ALERT, IAlertType } from '../types/alertType';
 import {
   CREATE_COMMENT,
+  DELETE_COMMENT,
+  DELETE_REPLY,
   GET_COMMENTS,
   ICreateCommentType,
+  IDeleteType,
   IGetCommentsType,
   IReplyCommentType,
   IUpdateType,
@@ -14,7 +17,7 @@ import {
 } from '../types/commentType';
 
 import { IComment } from '../../utils/Typescript';
-import { getAPI, patchAPI, postAPI } from '../../utils/FetchData';
+import { deleteAPI, getAPI, patchAPI, postAPI } from '../../utils/FetchData';
 
 export const createComment =
   (data: IComment, token: string) =>
