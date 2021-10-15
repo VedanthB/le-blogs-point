@@ -90,7 +90,7 @@ const commentCtrl = {
             totalCount: [
               {
                 $match: {
-                  blog_id: mongoose.Types.ObjectId(req.params.id),
+                  blog_id: new mongoose.Types.ObjectId(req.params.id),
                   comment_root: { $exists: false },
                   reply_user: { $exists: false },
                 },
