@@ -15,6 +15,7 @@ export const createComment =
   (data: IComment, token: string) =>
   async (dispatch: Dispatch<IAlertType | ICreateCommentType>) => {
     try {
+      console.log(data, token);
       const res = await postAPI('comment', data, token);
 
       dispatch({
