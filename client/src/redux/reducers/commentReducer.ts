@@ -6,6 +6,8 @@ import {
   REPLY_COMMENT,
   UPDATE_REPLY,
   UPDATE_COMMENT,
+  DELETE_REPLY,
+  DELETE_COMMENT,
 } from '../types/commentType';
 
 const initialState = {
@@ -56,6 +58,27 @@ const commentReducer = (
                 ...item,
                 replyCM: item.replyCM?.map((rp) =>
                   rp._id === action.payload._id ? action.payload : rp
+                ),
+              }
+            : item
+        ),
+      };
+
+    case DELETE_COMMENT:
+      return {
+        ...state,
+        data: state.data.filter((item) => item._id !== action.payload._id),
+      };
+
+    case DELETE_REPLY:
+      return {
+        ...state,
+        data: state.data.map((item) =>
+          item._id === action.payload.comment_root
+            ? {
+                ...item,
+                replyCM: item.replyCM?.filter(
+                  (rp) => rp._id !== action.payload._id
                 ),
               }
             : item
