@@ -1,13 +1,34 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 
-import { IBlog } from '../../utils/Typescript';
+import { IBlog, IParams, RootStore } from '../../utils/Typescript';
+
+import { deleteBlog } from '../../redux/actions/blogAction';
 
 interface IProps {
   blog: IBlog;
 }
 
 const CardHoriz: React.FC<IProps> = ({ blog }) => {
+  const { slug } = useParams<IParams>();
+  const { auth } = useSelector((state: RootStore) => state);
+  const dispatch = useDispatch();
+
+  const handleDelete = () => {
+    if (!auth.user || !auth.access_token) return;
+
+    if (slug !== auth.user._id)
+      return dispatch({
+        type: 'ALERT',
+        payload: { errors: 'Invalid Authentication.' },
+      });
+
+    if (window.confirm('Do you want to delete this post?')) {
+      dispatch(deleteBlog(blog, auth.access_token));
+    }
+  };
+
   return (
     <div className="card mb-3" style={{ minWidth: '280px' }}>
       <div className="row g-0 p-2">
@@ -53,11 +74,30 @@ const CardHoriz: React.FC<IProps> = ({ blog }) => {
               </Link>
             </h5>
             <p className="card-text">{blog.description}</p>
-            <p className="card-text">
-              <small className="text-muted">
-                {new Date(blog.createdAt).toLocaleString()}
-              </small>
-            </p>
+
+            {blog.title && (
+              <div
+                className="card-text d-flex justify-content-between
+                align-items-center"
+              >
+                {slug === auth.user?._id && (
+                  <div style={{ cursor: 'pointer' }}>
+                    <Link to={`/update_blog/${blog._id}`}>
+                      <i className="fas fa-edit" title="edit" />
+                    </Link>
+
+                    <i
+                      className="fas fa-trash text-danger mx-3"
+                      title="edit"
+                      onClick={handleDelete}
+                    />
+                  </div>
+                )}
+                <small className="text-muted">
+                  {new Date(blog.createdAt).toLocaleString()}
+                </small>
+              </div>
+            )}
           </div>
         </div>
       </div>

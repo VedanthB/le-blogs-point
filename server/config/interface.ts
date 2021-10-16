@@ -51,3 +51,13 @@ export interface IComment extends Document {
   _doc: object;
   comment_root: string;
 }
+
+export interface IBlog extends Document {
+  user: string;
+  title: string;
+  content: string;
+  description: string;
+  thumbnail: string;
+  category: string;
+  _doc: object;
+}
