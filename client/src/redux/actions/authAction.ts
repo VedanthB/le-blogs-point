@@ -3,8 +3,9 @@ import { AUTH, IAuthType } from '../types/authType';
 import { ALERT, IAlertType } from '../types/alertType';
 
 import { IUserLogin, IUserRegister } from '../../utils/Typescript';
-import { getAPI, postAPI } from '../../utils/FetchData';
-import { validPhone, validRegister } from '../../utils/Valid';
+import { postAPI, getAPI } from '../../utils/FetchData';
+import { validRegister, validPhone } from '../../utils/Valid';
+import { checkTokenExp } from '../../utils/checkTokenExp';
 
 export const login =
   (userLogin: IUserLogin) =>
@@ -16,10 +17,10 @@ export const login =
 
       dispatch({ type: AUTH, payload: res.data });
 
-      dispatch({ type: ALERT, payload: { success: res.data.message } });
-      localStorage.setItem('logged', 'le-blogsPoint');
-    } catch (error: any) {
-      dispatch({ type: ALERT, payload: { errors: error.response.data.msg } });
+      dispatch({ type: ALERT, payload: { success: res.data.msg } });
+      localStorage.setItem('logged', 'devat-channel');
+    } catch (err: any) {
+      dispatch({ type: ALERT, payload: { errors: err.response.data.msg } });
     }
   };
 
@@ -45,7 +46,7 @@ export const register =
 export const refreshToken =
   () => async (dispatch: Dispatch<IAuthType | IAlertType>) => {
     const logged = localStorage.getItem('logged');
-    if (logged !== 'le-blogsPoint') return;
+    if (logged !== 'devat-channel') return;
 
     try {
       dispatch({ type: ALERT, payload: { loading: true } });
@@ -61,12 +62,14 @@ export const refreshToken =
   };
 
 export const logout =
-  () => async (dispatch: Dispatch<IAuthType | IAlertType>) => {
+  (token: string) => async (dispatch: Dispatch<IAuthType | IAlertType>) => {
+    const result = await checkTokenExp(token, dispatch);
+    const access_token = result ? result : token;
+
     try {
       localStorage.removeItem('logged');
       dispatch({ type: AUTH, payload: {} });
-      await getAPI('logout');
-     
+      await getAPI('logout', access_token);
     } catch (err: any) {
       dispatch({ type: ALERT, payload: { errors: err.response.data.msg } });
     }
@@ -82,7 +85,24 @@ export const googleLogin =
       dispatch({ type: AUTH, payload: res.data });
 
       dispatch({ type: ALERT, payload: { success: res.data.msg } });
-      localStorage.setItem('logged', 'le-blogsPoint');
+      localStorage.setItem('logged', 'devat-channel');
+    } catch (err: any) {
+      dispatch({ type: ALERT, payload: { errors: err.response.data.msg } });
+    }
+  };
+
+export const facebookLogin =
+  (accessToken: string, userID: string) =>
+  async (dispatch: Dispatch<IAuthType | IAlertType>) => {
+    try {
+      dispatch({ type: ALERT, payload: { loading: true } });
+
+      const res = await postAPI('facebook_login', { accessToken, userID });
+
+      dispatch({ type: AUTH, payload: res.data });
+
+      dispatch({ type: ALERT, payload: { success: res.data.msg } });
+      localStorage.setItem('logged', 'devat-channel');
     } catch (err: any) {
       dispatch({ type: ALERT, payload: { errors: err.response.data.msg } });
     }
@@ -94,7 +114,7 @@ export const loginSMS =
     if (!check)
       return dispatch({
         type: ALERT,
-        payload: { errors: 'phone number format is incorrect' },
+        payload: { errors: 'Phone number format is incorrect.' },
       });
 
     try {
@@ -110,10 +130,9 @@ export const loginSMS =
 
 export const verifySMS = async (
   phone: string,
-  dispatch: Dispatch<IAlertType | IAuthType>
+  dispatch: Dispatch<IAuthType | IAlertType>
 ) => {
   const code = prompt('Enter your code');
-
   if (!code) return;
 
   try {
@@ -124,10 +143,9 @@ export const verifySMS = async (
     dispatch({ type: AUTH, payload: res.data });
 
     dispatch({ type: ALERT, payload: { success: res.data.msg } });
-
-    localStorage.setItem('logged', 'le-blogsPoint');
+    localStorage.setItem('logged', 'devat-channel');
   } catch (err: any) {
-    dispatch({ type: ALERT, payload: { errors: err.res.data.msg } });
+    dispatch({ type: ALERT, payload: { errors: err.response.data.msg } });
     setTimeout(() => {
       verifySMS(phone, dispatch);
     }, 100);
