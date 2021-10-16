@@ -2,7 +2,7 @@ import { Dispatch } from 'redux';
 import { ALERT, IAlertType } from '../types/alertType';
 
 import { postAPI, getAPI, patchAPI, deleteAPI } from '../../utils/FetchData';
-import { ICategory } from '../../utils/TypeScript';
+import { ICategory } from '../../utils/Typescript';
 
 import {
   CREATE_CATEGORY,
