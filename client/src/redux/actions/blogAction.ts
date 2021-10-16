@@ -1,5 +1,5 @@
 import { Dispatch } from 'redux';
-import { IBlog } from '../../utils/TypeScript';
+import { IBlog } from '../../utils/Typescript';
 import { imageUpload } from '../../utils/ImageUpload';
 import { postAPI, getAPI, putAPI, deleteAPI } from '../../utils/FetchData';
 
