@@ -24,12 +24,13 @@ export const createComment =
   async (dispatch: Dispatch<IAlertType | ICreateCommentType>) => {
     try {
       console.log(data, token);
-      const res = await postAPI('comment', data, token);
+      // const res =
+      await postAPI('comment', data, token);
 
-      dispatch({
-        type: CREATE_COMMENT,
-        payload: { ...res.data, user: data.user },
-      });
+      // dispatch({
+      //   type: CREATE_COMMENT,
+      //   payload: { ...res.data, user: data.user },
+      // });
     } catch (err: any) {
       dispatch({ type: ALERT, payload: { errors: err.response.data.msg } });
     }
@@ -60,16 +61,17 @@ export const replyComment =
   (data: IComment, token: string) =>
   async (dispatch: Dispatch<IAlertType | IReplyCommentType>) => {
     try {
-      const res = await postAPI('reply_comment', data, token);
+      // const res =
+      await postAPI('reply_comment', data, token);
 
-      dispatch({
-        type: REPLY_COMMENT,
-        payload: {
-          ...res.data,
-          user: data.user,
-          reply_user: data.reply_user,
-        },
-      });
+      // dispatch({
+      //   type: REPLY_COMMENT,
+      //   payload: {
+      //     ...res.data,
+      //     user: data.user,
+      //     reply_user: data.reply_user,
+      //   },
+      // });
     } catch (err: any) {
       dispatch({ type: ALERT, payload: { errors: err.response.data.msg } });
     }
@@ -84,13 +86,7 @@ export const updateComment =
         payload: data,
       });
 
-      await patchAPI(
-        `comment/${data._id}`,
-        {
-          content: data.content,
-        },
-        token
-      );
+      await patchAPI(`comment/${data._id}`, { data }, token);
     } catch (err: any) {
       dispatch({ type: ALERT, payload: { errors: err.response.data.msg } });
     }
