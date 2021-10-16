@@ -2,35 +2,34 @@ import { Dispatch } from 'redux';
 
 import { ALERT, IAlertType } from '../types/alertType';
 import {
-  CREATE_COMMENT,
-  DELETE_COMMENT,
-  DELETE_REPLY,
-  GET_COMMENTS,
   ICreateCommentType,
-  IDeleteType,
+  GET_COMMENTS,
   IGetCommentsType,
   IReplyCommentType,
-  IUpdateType,
-  REPLY_COMMENT,
   UPDATE_COMMENT,
   UPDATE_REPLY,
+  IUpdateType,
+  DELETE_COMMENT,
+  DELETE_REPLY,
+  IDeleteType,
 } from '../types/commentType';
 
 import { IComment } from '../../utils/Typescript';
-import { deleteAPI, getAPI, patchAPI, postAPI } from '../../utils/FetchData';
+import { postAPI, getAPI, patchAPI, deleteAPI } from '../../utils/FetchData';
+import { checkTokenExp } from '../../utils/checkTokenExp';
 
 export const createComment =
   (data: IComment, token: string) =>
   async (dispatch: Dispatch<IAlertType | ICreateCommentType>) => {
+    const result = await checkTokenExp(token, dispatch);
+    const access_token = result ? result : token;
     try {
-      console.log(data, token);
-      // const res =
-      await postAPI('comment', data, token);
+      await postAPI('comment', data, access_token);
 
       // dispatch({
       //   type: CREATE_COMMENT,
-      //   payload: { ...res.data, user: data.user },
-      // });
+      //   payload: { ...res.data, user: data.user }
+      // })
     } catch (err: any) {
       dispatch({ type: ALERT, payload: { errors: err.response.data.msg } });
     }
@@ -45,6 +44,7 @@ export const getComments =
       const res = await getAPI(
         `comments/blog/${id}?page=${num}&limit=${limit}`
       );
+
       dispatch({
         type: GET_COMMENTS,
         payload: {
@@ -60,18 +60,19 @@ export const getComments =
 export const replyComment =
   (data: IComment, token: string) =>
   async (dispatch: Dispatch<IAlertType | IReplyCommentType>) => {
+    const result = await checkTokenExp(token, dispatch);
+    const access_token = result ? result : token;
     try {
-      // const res =
-      await postAPI('reply_comment', data, token);
+      await postAPI('reply_comment', data, access_token);
 
       // dispatch({
       //   type: REPLY_COMMENT,
       //   payload: {
       //     ...res.data,
       //     user: data.user,
-      //     reply_user: data.reply_user,
-      //   },
-      // });
+      //     reply_user: data.reply_user
+      //   }
+      // })
     } catch (err: any) {
       dispatch({ type: ALERT, payload: { errors: err.response.data.msg } });
     }
@@ -80,13 +81,15 @@ export const replyComment =
 export const updateComment =
   (data: IComment, token: string) =>
   async (dispatch: Dispatch<IAlertType | IUpdateType>) => {
+    const result = await checkTokenExp(token, dispatch);
+    const access_token = result ? result : token;
     try {
       dispatch({
         type: data.comment_root ? UPDATE_REPLY : UPDATE_COMMENT,
         payload: data,
       });
 
-      await patchAPI(`comment/${data._id}`, { data }, token);
+      await patchAPI(`comment/${data._id}`, { data }, access_token);
     } catch (err: any) {
       dispatch({ type: ALERT, payload: { errors: err.response.data.msg } });
     }
@@ -95,13 +98,15 @@ export const updateComment =
 export const deleteComment =
   (data: IComment, token: string) =>
   async (dispatch: Dispatch<IAlertType | IDeleteType>) => {
+    const result = await checkTokenExp(token, dispatch);
+    const access_token = result ? result : token;
     try {
       dispatch({
         type: data.comment_root ? DELETE_REPLY : DELETE_COMMENT,
         payload: data,
       });
 
-      await deleteAPI(`comment/${data._id}`, token);
+      await deleteAPI(`comment/${data._id}`, access_token);
     } catch (err: any) {
       dispatch({ type: ALERT, payload: { errors: err.response.data.msg } });
     }
