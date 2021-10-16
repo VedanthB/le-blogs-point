@@ -2,7 +2,7 @@ import { Dispatch } from 'redux';
 import { AUTH, IAuthType } from '../types/authType';
 import { ALERT, IAlertType } from '../types/alertType';
 
-import { IUserLogin, IUserRegister } from '../../utils/TypeScript';
+import { IUserLogin, IUserRegister } from '../../utils/Typescript';
 import { postAPI, getAPI } from '../../utils/FetchData';
 import { validRegister, validPhone } from '../../utils/Valid';
 import { checkTokenExp } from '../../utils/checkTokenExp';
