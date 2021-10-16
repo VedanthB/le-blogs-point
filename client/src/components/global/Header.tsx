@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Search from './Search';
 import Menu from './Menu';
+import logo from '../../logo.svg';
 
 const Header = () => {
   return (
@@ -10,7 +11,7 @@ const Header = () => {
       style={{ position: 'sticky', top: 0, left: 0, zIndex: 9 }}
     >
       <Link className="navbar-brand" to="/">
-        le-blogsPoint
+        <img src={logo} alt="logo" height="50px" width="50px" />
       </Link>
 
       <button
