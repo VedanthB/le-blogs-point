@@ -1,14 +1,14 @@
 import { Request, Response } from 'express';
 import Categories from '../models/categoryModel';
+import Blogs from '../models/blogModel';
 import { IReqAuth } from '../config/interface';
 
 const categoryCtrl = {
   createCategory: async (req: IReqAuth, res: Response) => {
     if (!req.user)
-      return res.status(400).json({ msg: 'Invalid Authentication' });
+      return res.status(400).json({ msg: 'Invalid Authentication.' });
 
     if (req.user.role !== 'admin')
-      // admin check to create blog categories
       return res.status(400).json({ msg: 'Invalid Authentication.' });
 
     try {
@@ -52,7 +52,8 @@ const categoryCtrl = {
           _id: req.params.id,
         },
         { name: req.body.name.toLowerCase() }
-      ); //update
+      );
+
       res.json({ msg: 'Update Success!' });
     } catch (err: any) {
       return res.status(500).json({ msg: err.message });
@@ -66,7 +67,15 @@ const categoryCtrl = {
       return res.status(400).json({ msg: 'Invalid Authentication.' });
 
     try {
+      const blog = await Blogs.findOne({ category: req.params.id });
+      if (blog)
+        return res.status(400).json({
+          msg: 'Can not delete! In this category also exist blogs.',
+        });
+
       const category = await Categories.findByIdAndDelete(req.params.id);
+      if (!category)
+        return res.status(400).json({ msg: 'Category does not exists.' });
 
       res.json({ msg: 'Delete Success!' });
     } catch (err: any) {
