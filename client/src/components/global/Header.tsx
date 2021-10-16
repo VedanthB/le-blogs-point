@@ -1,11 +1,14 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import Search from "./Search";
-import Menu from "./Menu";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import Search from './Search';
+import Menu from './Menu';
 
 const Header = () => {
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-light p-3">
+    <nav
+      className="navbar navbar-expand-lg navbar-light bg-light p-3"
+      style={{ position: 'sticky', top: 0, left: 0, zIndex: 9 }}
+    >
       <Link className="navbar-brand" to="/">
         le-blogsPoint
       </Link>
