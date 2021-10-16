@@ -259,6 +259,28 @@ const blogCtrl = {
       return res.status(500).json({ msg: err.message });
     }
   },
+  deleteBlog: async (req: IReqAuth, res: Response) => {
+    if (!req.user)
+      return res.status(400).json({ msg: 'Invalid Authentication.' });
+
+    try {
+      // Delete Blog
+      const blog = await Blogs.findOneAndDelete({
+        _id: req.params.id,
+        user: req.user._id,
+      });
+
+      if (!blog)
+        return res.status(400).json({ msg: 'Invalid Authentication.' });
+
+      // Delete Comments
+      await Comments.deleteMany({ blog_id: blog._id });
+
+      res.json({ msg: 'Delete Success!' });
+    } catch (err: any) {
+      return res.status(500).json({ msg: err.message });
+    }
+  },
 };
 
 export default blogCtrl;
