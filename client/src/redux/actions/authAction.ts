@@ -58,6 +58,7 @@ export const refreshToken =
       dispatch({ type: ALERT, payload: {} });
     } catch (err: any) {
       dispatch({ type: ALERT, payload: { errors: err.response.data.msg } });
+      localStorage.removeItem('logged');
     }
   };
 
