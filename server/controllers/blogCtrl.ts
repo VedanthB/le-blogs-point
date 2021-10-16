@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import Blogs from '../models/blogModel';
+import Comments from '../models/commentModel';
 import { IReqAuth } from '../config/interface';
 import mongoose from 'mongoose';
 
@@ -29,7 +30,10 @@ const blogCtrl = {
       });
 
       await newBlog.save();
-      res.json({ newBlog });
+      res.json({
+        ...newBlog._doc,
+        user: req.user,
+      });
     } catch (err: any) {
       return res.status(500).json({ msg: err.message });
     }
